@@ -8,31 +8,38 @@ export default {
       _,
       { firstName, lastName, username, email, password }
     ) => {
-      const existingUser = await client.user.findFirst({
-        where: {
-          OR: [
-            {
-              username,
-            },
-            {
-              email,
-            },
-          ],
-        },
-      });
-      console.log(existingUser);
-      // hash password
-      const uglyPassword = await bcrypt.hash(password, 10);
-      // save and return the user
-      return client.user.create({
-        data: {
-          username,
-          email,
-          firstName,
-          lastName,
-          password: uglyPassword,
-        },
-      });
+      try {
+        const existingUser = await client.user.findFirst({
+          where: {
+            OR: [
+              {
+                username,
+              },
+              {
+                email,
+              },
+            ],
+          },
+        });
+        if (existingUser) {
+          throw new Error("This username/email is already taken.");
+        }
+        // hash password
+        const uglyPassword = await bcrypt.hash(password, 10);
+        // save and return the user
+        return client.user.create({
+          // browser has automatically async await function
+          data: {
+            username,
+            email,
+            firstName,
+            lastName,
+            password: uglyPassword,
+          },
+        });
+      } catch (error) {
+        return error;
+      }
     },
   },
 };
