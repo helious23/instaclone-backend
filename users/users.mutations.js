@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import client from "../client";
+import jwt from "jsonwebtoken";
 
 export default {
   Mutation: {
@@ -7,8 +8,8 @@ export default {
       _,
       { firstName, lastName, username, email, password }
     ) => {
+      // check user or email are already existed on DB
       try {
-        // check user or email are already existed on DB
         const existingUser = await client.user.findFirst({
           where: {
             OR: [
@@ -25,7 +26,7 @@ export default {
           throw new Error("This username/email is already taken.");
         }
         // hash password
-        const uglyPassword = await bcrypt.hash(password, 10);
+        const uglyPassword = await bcrypt.hash(password, 10); //hash(data, salt)
         // save and return the user
         return client.user.create({
           // browser has automatically async await function
@@ -51,7 +52,7 @@ export default {
         };
       }
       // check password with args.password
-      const passwordOk = await bcrypt.compare(password, user.password);
+      const passwordOk = await bcrypt.compare(password, user.password); // comnpare(data, encrypedpassword)
       if (!passwordOk) {
         return {
           ok: false,
@@ -59,6 +60,11 @@ export default {
         };
       }
       // issue a toke send it tothe user
+      const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
+      return {
+        ok: true,
+        token,
+      };
     },
   },
 };
