@@ -1,13 +1,15 @@
 require("dotenv").config(); // import dotenv from "dotdev", dotenv.config(); 와 동일한 코드
 import { ApolloServer } from "apollo-server";
 import schema from "./schema";
+import { getUser } from "./users/users.utils";
 
 const PORT = process.env.PORT;
 const server = new ApolloServer({
   schema,
-  context: {
-    token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjIxODM5MjY1fQ.lnci35VnSWeFsmzlagNo78V_hPadNzZ7q5SRnKsgxBo",
+  context: async ({ req }) => {
+    return {
+      loggedInUser: await getUser(req.headers.token),
+    };
   },
 });
 server

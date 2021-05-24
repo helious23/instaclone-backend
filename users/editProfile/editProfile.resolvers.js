@@ -7,16 +7,16 @@ export default {
     editProfile: async (
       _,
       { firstName, lastName, username, email, password: newPassword },
-      { token } // 3rd argument : context by the server.js (Apolloserver)
+      { loggedInUser } // 3rd argument : context by the server.js (Apolloserver)
     ) => {
-      const { id } = await jwt.verify(token, process.env.SECRET_KEY); // verify the token
+      console.log(loggedInUser);
       let uglyPassword = null;
       if (newPassword) {
         uglyPassword = await bcrypt.hash(newPassword, 10); // hash password
       }
       const updatedUser = await client.user.update({
         where: {
-          id,
+          id: loggedInUser.id,
         },
         data: {
           firstName,
