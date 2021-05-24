@@ -22,7 +22,7 @@ export default {
         };
       }
       // issue a toke send it tothe user
-      const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
+      const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY); // issue the token by sign
       return {
         ok: true,
         token,

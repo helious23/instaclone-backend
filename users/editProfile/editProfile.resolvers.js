@@ -1,26 +1,28 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import client from "../../client";
 
 export default {
   Mutation: {
     editProfile: async (
       _,
-      { firstName, lastName, username, email, password: newPassword }
+      { firstName, lastName, username, email, password: newPassword, token }
     ) => {
+      const { id } = await jwt.verify(token, process.env.SECRET_KEY); // verify the token
       let uglyPassword = null;
       if (newPassword) {
         uglyPassword = await bcrypt.hash(newPassword, 10); // hash password
       }
       const updatedUser = await client.user.update({
         where: {
-          id: 1,
+          id,
         },
         data: {
           firstName,
           lastName,
           username,
           email,
-          ...(uglyPassword && { password: uglyPassword }), // if true, ...괄호 사라짐
+          ...(uglyPassword && { password: uglyPassword }), // if uglyPassword true, ...때문에 {} 사라짐
         },
       });
       if (updatedUser.id) {
