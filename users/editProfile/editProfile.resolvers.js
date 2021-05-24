@@ -6,7 +6,8 @@ export default {
   Mutation: {
     editProfile: async (
       _,
-      { firstName, lastName, username, email, password: newPassword, token }
+      { firstName, lastName, username, email, password: newPassword },
+      { token } // 3rd argument : context by the server.js (Apolloserver)
     ) => {
       const { id } = await jwt.verify(token, process.env.SECRET_KEY); // verify the token
       let uglyPassword = null;
