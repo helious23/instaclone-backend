@@ -1,6 +1,6 @@
 require("dotenv").config(); // import dotenv from "dotdev", dotenv.config(); 와 동일한 코드
 import { ApolloServer } from "apollo-server";
-import schema, { resolvers, typeDefs } from "./schema";
+import { resolvers, typeDefs } from "./schema";
 import { getUser, protectResolver } from "./users/users.utils";
 
 const PORT = process.env.PORT;

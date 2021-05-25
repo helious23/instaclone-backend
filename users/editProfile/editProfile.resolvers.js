@@ -4,9 +4,12 @@ import { protectResolver } from "../users.utils";
 
 const resolverFn = async (
   _,
-  { firstName, lastName, username, email, password: newPassword, bio },
+  { firstName, lastName, username, email, password: newPassword, bio, avatar },
   { loggedInUser } // 3rd argument : context by the server.js (Apolloserver)
 ) => {
+  const { filename, createReadStream } = await avatar;
+  const stream = createReadStream();
+  console.log(stream);
   let uglyPassword = null;
   if (newPassword) {
     uglyPassword = await bcrypt.hash(newPassword, 10); // hash password
