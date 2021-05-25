@@ -1,3 +1,4 @@
+import { createWriteStream } from "fs";
 import bcrypt from "bcrypt";
 import client from "../../client";
 import { protectResolver } from "../users.utils";
@@ -8,8 +9,10 @@ const resolverFn = async (
   { loggedInUser } // 3rd argument : context by the server.js (Apolloserver)
 ) => {
   const { filename, createReadStream } = await avatar;
-  const stream = createReadStream();
-  console.log(stream);
+  const readStream = createReadStream();
+  const writeStream = createWriteStream(process.cwd() + "/uploads/" + filename); // process.cwd(): 현재 작업 폴더의 절대경로
+  readStream.pipe(writeStream); // read stream -> write stream
+
   let uglyPassword = null;
   if (newPassword) {
     uglyPassword = await bcrypt.hash(newPassword, 10); // hash password
