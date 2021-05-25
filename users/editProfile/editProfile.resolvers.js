@@ -1,7 +1,7 @@
 import { createWriteStream } from "fs";
 import bcrypt from "bcrypt";
 import client from "../../client";
-import { protectResolver } from "../users.utils";
+import { protectedResolver } from "../users.utils";
 
 const resolverFn = async (
   _,
@@ -51,6 +51,6 @@ const resolverFn = async (
 
 export default {
   Mutation: {
-    editProfile: protectResolver(resolverFn),
+    editProfile: protectedResolver(resolverFn),
   },
 };
