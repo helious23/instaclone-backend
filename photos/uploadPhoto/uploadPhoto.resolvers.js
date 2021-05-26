@@ -5,30 +5,32 @@ export default {
   Mutation: {
     uploadPhoto: protectedResolver(
       async (_, { file, caption }, { loggedInUser }) => {
+        let hashtagObjs = [];
         if (caption) {
           // parse caption
           const hashtags = caption.match(/#[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|\w]+/g);
-          console.log(hashtags);
-          // get or create Hasntags
-          client.photo.create({
-            data: {
-              file,
-              caption,
-              hashtag: {
-                connectOrCreate: [
-                  {
-                    where: {
-                      hashtag: "#food",
-                    },
-                    create: {
-                      hashtag: "#food",
-                    },
-                  },
-                ],
+          hashtagObjs = hashtags.map((hashtag) => ({
+            where: { hashtag },
+            create: { hashtag },
+          }));
+        }
+        // get or create Hasntags
+        return client.photo.create({
+          data: {
+            file,
+            caption,
+            user: {
+              connect: {
+                id: loggedInUser.id,
               },
             },
-          });
-        }
+            ...(hashtagObjs.length > 0 && {
+              hashtag: {
+                connectOrCreate: hashtagObjs,
+              },
+            }),
+          },
+        });
         // save the photo WITH the parsed Hashtags
         // add the photo to the Hashtags
       }
