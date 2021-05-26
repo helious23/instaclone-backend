@@ -1,11 +1,12 @@
 import client from "../../client";
 
+// offset based pagination
 export default {
   Query: {
     seeFollowers: async (_, { username, page }) => {
       const ok = await client.user.findUnique({
         where: { username },
-        select: { id: true }, // id 만 확인해도 충분함
+        select: { id: true }, // id 만 확인해도 충분
       });
       if (!ok) {
         return {
