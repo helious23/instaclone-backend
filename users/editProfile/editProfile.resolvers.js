@@ -8,6 +8,7 @@ const resolverFn = async (
   { firstName, lastName, username, email, password: newPassword, bio, avatar },
   { loggedInUser } // 3rd argument : context by the server.js (Apolloserver)
 ) => {
+  // editing avatar
   let avatarUrl = null;
   if (avatar) {
     const { filename, createReadStream } = await avatar;
@@ -19,10 +20,12 @@ const resolverFn = async (
     readStream.pipe(writeStream); // read stream -> write stream
     avatarUrl = `http://localhost:4000/static/${newFilename}`;
   }
+  // editing password
   let uglyPassword = null;
   if (newPassword) {
     uglyPassword = await bcrypt.hash(newPassword, 10); // hash password
   }
+
   const updatedUser = await client.user.update({
     where: {
       id: loggedInUser.id,
@@ -37,6 +40,7 @@ const resolverFn = async (
       ...(avatarUrl && { avatar: avatarUrl }),
     },
   });
+
   if (updatedUser.id) {
     return {
       ok: true,
