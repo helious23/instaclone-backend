@@ -25,7 +25,7 @@ export default {
               },
             },
             ...(hashtagObjs.length > 0 && {
-              hashtag: {
+              hashtags: {
                 connectOrCreate: hashtagObjs,
               },
             }),
