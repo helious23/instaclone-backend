@@ -32,8 +32,8 @@ export default {
       /*
       const exists = await client.user
         .findUnique({ where: { username: loggedInUser.username } })
-        .following({ where: { id } });
-      return exists.length !== 0;
+        .following({ where: { id } }); loggedIn User 의 following array 중 id 가 있는지 : return array
+      return exists.length !== 0; javascript 로 count 하므로 db에 무리를 줄 수 있음
       */
       const exists = await client.user.count({
         where: {
@@ -43,9 +43,11 @@ export default {
               id,
             },
           },
-        },
+        }, // loggedInUser 의 following array 중 id로 검색한 갯수가 있는지 : 0 or 1
       });
-      return Boolean(exists);
+      return Boolean(exists); // 0: false, 1: true
     },
+
+    photos: ({ id }) => client.user.findUnique({ where: { id } }).photos(),
   },
 };

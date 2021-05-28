@@ -19,7 +19,7 @@ export default {
         .following({
           take: 5,
           skip: lastId ? 1 : 0, // lastId null 인 경우 skip 하면 X
-          ...(lastId && { cursor: { id: lastId } }), // unique field 사용해야됨
+          ...(lastId && { cursor: { id: lastId } }), // unique property 사용해야됨 (following user 의 id)
         });
       return {
         ok: true,
