@@ -10,6 +10,7 @@ export default gql`
     hashtags: [Hashtag] # computed field
     createdAt: String!
     updatedAt: String!
+    isMine: Boolean! # computed field
   }
   type Hashtag {
     id: Int!
