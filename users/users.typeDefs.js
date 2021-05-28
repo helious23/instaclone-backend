@@ -15,7 +15,7 @@ export default gql`
     avatar: String
 
     # Photo
-    photos: [Photo]
+    photos(page: Int!): [Photo]
 
     # Pagination needed
     following: [User]

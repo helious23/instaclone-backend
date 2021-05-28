@@ -14,7 +14,6 @@ export default {
             create: { hashtag },
           }));
         }
-        // get or create Hasntags
         return client.photo.create({
           data: {
             file,
@@ -31,8 +30,6 @@ export default {
             }),
           },
         });
-        // save the photo WITH the parsed Hashtags
-        // add the photo to the Hashtags
       }
     ),
   },

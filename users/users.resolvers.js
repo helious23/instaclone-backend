@@ -48,6 +48,17 @@ export default {
       return Boolean(exists); // 0: false, 1: true
     },
 
-    photos: ({ id }) => client.user.findUnique({ where: { id } }).photos(),
+    photos: ({ id }, { page }) => {
+      return client.user
+        .findUnique({
+          where: {
+            id,
+          },
+        })
+        .photos({
+          take: 5,
+          skip: (page - 1) * 5,
+        });
+    },
   },
 };
