@@ -3,7 +3,7 @@ import client from "../../client";
 export default {
   Query: {
     seePhotoComments: (_, { id, page }) =>
-      client.photo.findMany({
+      client.comment.findMany({
         where: {
           photoId: id,
         },
