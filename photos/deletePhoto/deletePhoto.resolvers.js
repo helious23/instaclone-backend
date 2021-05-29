@@ -29,6 +29,7 @@ export default {
             id,
           },
         });
+
         delPhotoS3(file);
 
         await client.photo.delete({
