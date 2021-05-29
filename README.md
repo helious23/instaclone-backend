@@ -35,6 +35,11 @@ Instaclone Backend
 - [x] Delete Comment
 - [x] Edit Comment
 
+## Refactor
+
+- [x] Mutatino Responses
+- [x] Use Info in protectedResolver
+
 ## Extras
 
 - [ ] S3 Image Upload
