@@ -68,7 +68,7 @@ export default {
             },
           },
         });
-        pubsub.publish(NEW_MESSAGE, { roomUpdates: { ...message } });
+        pubsub.publish(NEW_MESSAGE, { roomUpdates: { ...message } }); // reolver name : {...item}
         return {
           ok: true,
         };
