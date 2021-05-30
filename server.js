@@ -5,19 +5,39 @@ import logger from "morgan";
 import { ApolloServer } from "apollo-server-express";
 import { resolvers, typeDefs } from "./schema";
 import { getUser, protectResolver } from "./users/users.utils";
+import { connect } from "http2";
 
 const PORT = process.env.PORT;
 const apollo = new ApolloServer({
   resolvers,
   typeDefs,
-  context: async ({ req }) => {
-    // 추후에 http and websocket 둘 다 적용해야됨
-    if (req) {
+  context: async (ctx) => {
+    // http
+    if (ctx.req) {
       return {
-        loggedInUser: await getUser(req.headers.token),
+        loggedInUser: await getUser(ctx.req.headers.token),
         protectResolver,
       };
+    } else {
+      // websocket
+      const {
+        connection: { context },
+      } = ctx;
+      return {
+        loggedInUser: context.loggedInUser,
+      };
     }
+  },
+  subscriptions: {
+    onConnect: async ({ token }) => {
+      if (!token) {
+        throw new Error("You can't listen.");
+      }
+      const loggedInUser = await getUser(token);
+      return {
+        loggedInUser, // onConnect 의 return 값은 context 로 전달
+      };
+    },
   },
 });
 
