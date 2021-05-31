@@ -20,6 +20,19 @@ export default {
           take: 5,
           skip: (page - 1) * 5, // 5개씩 page 수에 따라 skip
         });
+
+      /*
+        const followers = awiat client.user.findMany({
+          where: {
+            following: {
+              some: {
+                username, // following list 중 username 을 포함하는 user
+              }
+            }
+          }
+        })
+        */
+
       const totalFollowers = await client.user.count({
         where: {
           following: { some: { username } }, // following list 에 username 이 있는 user 만 count

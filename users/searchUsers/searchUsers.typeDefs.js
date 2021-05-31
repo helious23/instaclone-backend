@@ -5,7 +5,7 @@ export default gql`
     ok: Boolean!
     error: String
     users: [User]
-    totalPages: Int
+    totalPages: Int!
   }
   type Query {
     searchUsers(keyword: String!, page: Int!): SearchUsersResult!

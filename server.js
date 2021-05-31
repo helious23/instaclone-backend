@@ -5,7 +5,6 @@ import logger from "morgan";
 import { ApolloServer } from "apollo-server-express";
 import { resolvers, typeDefs } from "./schema";
 import { getUser, protectResolver } from "./users/users.utils";
-import { connect } from "http2";
 
 const PORT = process.env.PORT;
 const apollo = new ApolloServer({
@@ -32,7 +31,7 @@ const apollo = new ApolloServer({
     onConnect: async ({ token }) => {
       if (!token) {
         throw new Error("You can't listen.");
-      }
+      } // subscription 이 public 일 경우는 삭제: token 없이도 listen 가능
       const loggedInUser = await getUser(token);
       return {
         loggedInUser, // onConnect 의 return 값은 context 로 전달

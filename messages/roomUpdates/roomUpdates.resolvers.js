@@ -22,12 +22,13 @@ export default {
           },
         });
         if (!room) {
-          throw new Error("You shall not see this.");
+          throw new Error("You shall not see this."); // room 이 없을 때 listening 막음
         }
         return withFilter(
           () => pubsub.asyncIterator(NEW_MESSAGE),
           async ({ roomUpdates }, { id }, { loggedInUser }) => {
-            // Checking after listening
+            // payload, variables, context
+            // Checking after publishing
             if (roomUpdates.roomId === id) {
               const room = await client.room.findFirst({
                 where: {
@@ -47,7 +48,6 @@ export default {
               }
               return true;
             }
-            // payload, variables
             return roomUpdates.roomId === id; // payload.roomUpdates.roomId === variables.id
           }
         )(root, args, context, info);
