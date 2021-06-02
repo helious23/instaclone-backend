@@ -10,7 +10,8 @@ const PORT = process.env.PORT;
 const apollo = new ApolloServer({
   resolvers,
   typeDefs,
-  playground: true,
+  playground: true, // production 이라 생각해서 playground false 가 default
+  introspection: true,
   context: async (ctx) => {
     // http
     if (ctx.req) {
