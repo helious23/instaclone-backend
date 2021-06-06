@@ -12,6 +12,7 @@ export default gql`
     createdAt: String!
     updatedAt: String!
     isMine: Boolean! # computed field
+    isLiked: Boolean! # computed field
   }
   type Hashtag {
     id: Int!
