@@ -32,7 +32,11 @@ export default {
           photoId: id,
         },
       }),
-    comments: ({ id }) => client.photo.findUnique({ where: id }).comments(),
+    comments: ({ id }) =>
+      client.comment.findMany({
+        where: { photoId: id },
+        include: { user: true },
+      }),
     isMine: ({ userId }, _, { loggedInUser }) => {
       // if (!loggedInUser) {
       //   return false;
