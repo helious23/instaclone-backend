@@ -29,6 +29,16 @@ export default {
             id,
           },
         });
+        await client.comment.deleteMany({
+          where: {
+            photoId: id,
+          },
+        });
+        await client.like.deleteMany({
+          where: {
+            photoId: id,
+          },
+        });
 
         delPhotoS3(file);
 
