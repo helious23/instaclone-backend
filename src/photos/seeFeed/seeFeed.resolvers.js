@@ -3,8 +3,10 @@ import { protectedResolver } from "../../users/users.utils";
 
 export default {
   Query: {
-    seeFeed: protectedResolver((_, { lastId }, { loggedInUser }) =>
+    seeFeed: protectedResolver((_, { offset }, { loggedInUser }) =>
       client.photo.findMany({
+        take: 5,
+        skip: offset,
         where: {
           OR: [
             {
@@ -24,11 +26,6 @@ export default {
         orderBy: {
           createdAt: "desc", // 내림차순 : 최신이 위로
         },
-        /*
-        take:5,
-        skip: lastId? 1 : 0,
-        ...(lastId && { cursor: { id: lastId } }),  cursor pagination
-        */
       })
     ),
   },
