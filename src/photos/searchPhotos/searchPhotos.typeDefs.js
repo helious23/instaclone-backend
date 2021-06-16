@@ -5,7 +5,6 @@ export default gql`
     ok: Boolean!
     error: String
     photos: [Photo]
-    totalPhotos: Int
   }
   type Query {
     searchPhotos(keyword: String!, page: Int!): SearchPhotosResult!
