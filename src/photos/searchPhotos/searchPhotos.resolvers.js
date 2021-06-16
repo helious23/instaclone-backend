@@ -10,19 +10,12 @@ export default {
           },
         },
         take: 5,
-        skip: (page - 1) * 5,
+        skip: page,
       });
-      const totalPhotos = client.photo.count({
-        where: {
-          caption: {
-            contains: keyword,
-          },
-        },
-      });
+
       return {
         ok: true,
         photos,
-        totalPhotos,
       };
     },
   },
