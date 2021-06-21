@@ -8,8 +8,6 @@ export default {
         where: {
           roomId: id,
         },
-        take: 20,
-        skip: offset,
       }),
     unreadTotal: ({ id }, _, { loggedInUser }) => {
       if (!loggedInUser) {
