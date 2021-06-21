@@ -55,7 +55,7 @@ export default {
         }
         const message = await client.message.create({
           data: {
-            payload, // sending message
+            payload, // 보내는 message
             room: {
               connect: {
                 id: room.id, // 방금 만든 room
@@ -63,7 +63,7 @@ export default {
             },
             user: {
               connect: {
-                id: loggedInUser.id, // login 한 user
+                id: loggedInUser.id, // message 보낸 user
               },
             },
           },
@@ -71,6 +71,7 @@ export default {
         pubsub.publish(NEW_MESSAGE, { roomUpdates: { ...message } }); // reolver name : {...item}
         return {
           ok: true,
+          id: message.id,
         };
       }
     ),
