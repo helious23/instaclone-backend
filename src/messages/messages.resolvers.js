@@ -3,11 +3,13 @@ import client from "../client";
 export default {
   Room: {
     users: ({ id }) => client.room.findUnique({ where: { id } }).users(),
-    messages: ({ id }) =>
+    messages: ({ id }, { offset }) =>
       client.message.findMany({
         where: {
           roomId: id,
         },
+        take: 20,
+        skip: offset,
       }),
     unreadTotal: ({ id }, _, { loggedInUser }) => {
       if (!loggedInUser) {
